@@ -18,6 +18,27 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get( "/:id", async ( req: Request, res: Response ) => {
+    // destruct our path params
+    let { id } = req.params;
+
+    // check to make sure the id is set
+    if (!id) { 
+      // respond with an error if not
+      return res.status(400).send(`id is required`);
+    }
+
+    // try to find the car by id
+    const item = await FeedItem.findByPk(id);
+
+    // respond not found, if we do not have this id
+    if(!item) {
+      return res.status(404).send(`feed is not found`);
+    }
+
+    //return the car with a sucess status code
+    res.status(200).send(item);
+  } );
 
 // update a specific resource
 router.patch('/:id', 
