@@ -43,7 +43,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     
     const token = token_bearer[1];
 
-    return jwt.verify(token, "hello", (err, decoded) => {
+    return jwt.verify(token, config.dev.secret, (err, decoded) => {
       if (err) {
         return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
       }
@@ -106,7 +106,7 @@ router.post('/', async (req: Request, res: Response) => {
     // find the user
     const user = await User.findByPk(email);
     // check that user doesnt exists
-    if(user) {
+    if (user) {
         return res.status(422).send({ auth: false, message: 'User may already exist' });
     }
 
